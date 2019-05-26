@@ -25,9 +25,6 @@ let main = () => {
   let data = Stdio.In_channel.read_all("./config.json") |> Ezjsonm.from_string;
   let config = TypeSerde.deserializeConfig(data);
   switch config {
-    | Error(error) =>
-      print_endline(String.concat(" >> ", error));
-      exit(1)
     | Ok(config) =>
       let color = switch config.color {
         | Red => ANSITerminal.Red
@@ -52,6 +49,9 @@ let main = () => {
         });
       }
       // print_endline("Hello in " ++ color)
+    | Error(error) =>
+      print_endline(String.concat(" >> ", error));
+      exit(1)
   }
 }
 

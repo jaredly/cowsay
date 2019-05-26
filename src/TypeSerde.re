@@ -18,6 +18,7 @@ type target = [
   | `A(list(target))
   | `O(list((string, target)))
 ];
+let schemaPropertyName = "$schemaVersion";
 module Version1 = {
   open Types1;
   let rec deserialize_Config____color:
@@ -192,11 +193,11 @@ module Current = Version1;
 let parseVersion = json =>
   switch (json) {
   | `O(items) =>
-    switch (items |> List.assoc("$schemaVersion")) {
-    | exception Not_found => Error("No $schemaVersion")
+    switch (items |> List.assoc(schemaPropertyName)) {
+    | exception Not_found => Error("No " ++ schemaPropertyName)
     | `Float(schemaVersion) =>
       [@implicit_arity] Ok(int_of_float(schemaVersion), json)
-    | _ => Error("Invalid schema version - expected number")
+    | _ => Error("Invalid " ++ schemaPropertyName ++ " - expected number")
     }
   | `A([`Float(version), payload]) =>
     [@implicit_arity] Ok(int_of_float(version), payload)
@@ -205,7 +206,7 @@ let parseVersion = json =>
 let wrapWithVersion = (version, payload) =>
   switch (payload) {
   | `O(items) =>
-    `O([("$schemaVersion", `Float(float_of_int(version))), ...items])
+    `O(items @ [(schemaPropertyName, `Float(float_of_int(version)))])
   | _ => `A([`Float(float_of_int(version)), payload])
   };
 let serializeConfig = data =>
