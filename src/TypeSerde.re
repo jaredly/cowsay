@@ -1,15 +1,48 @@
-[@ocaml.warning "-34"];
+[@ocaml.warning "-34-39"];
 module Types1 = {
+  type _Config__color = Config.color = | Red | Blue | Green
+  and _Config__config = {
+    color: _Config__color,
+    languages: array(_Config__language),
+    defaultGreeting: option(string),
+  }
+  and _Config__language = Config.language = | Spanish | English | German;
+};
+module Types2 = {
   type _Config__color = Config.color = | Red | Blue | Green
   and _Config__config =
     Config.config = {
-      color: _Config__color,
-      languages: array(_Config__language),
+      languages: array((_Config__language, _Config__color)),
       defaultGreeting: option(string),
     }
   and _Config__language = Config.language = | Spanish | English | German;
+  let rec migrate_Config____color: Types1._Config__color => _Config__color =
+    _input_data => _input_data
+  and migrate_Config____config: Types1._Config__config => _Config__config =
+    _input_data => {
+      let _converted_languages =
+        (
+          oldConfig =>
+            oldConfig.languages |> Array.map(lang => (lang, oldConfig.color)):
+            Types1._Config__config =>
+            array((_Config__language, _Config__color))
+        )(
+          _input_data,
+        );
+      let _converted_defaultGreeting =
+        switch (_input_data.defaultGreeting) {
+        | None => None
+        | Some(_item) => Some(_item)
+        };
+      {
+        defaultGreeting: _converted_defaultGreeting,
+        languages: _converted_languages,
+      };
+    }
+  and migrate_Config____language: Types1._Config__language => _Config__language =
+    _input_data => _input_data;
 };
-let currentVersion = 1;
+let currentVersion = 2;
 type target = [
   | `Null
   | `Bool(bool)
@@ -139,7 +172,108 @@ module Version1 = {
       | `String(tag) when "deutsch" == tag => Ok(German: _Config__language)
       | `A([`String(tag), ..._]) => Error(["Invalid constructor: " ++ tag])
       | _ => Error(["Expected an array"])
+      };
+};
+module Version2 = {
+  open Types2;
+  let rec deserialize_Config____color:
+    target => result(_Config__color, list(string)) = Version1.deserialize_Config____color
+  and deserialize_Config____config:
+    target => result(_Config__config, list(string)) =
+    record =>
+      switch (record) {
+      | `O(items) =>
+        let inner = attr_defaultGreeting => {
+          let inner = attr_languages =>
+            Ok(
+              {
+                languages: attr_languages,
+                defaultGreeting: attr_defaultGreeting,
+              }: _Config__config,
+            );
+          switch (items |> List.assoc("languages")) {
+          | exception Not_found => Error(["No attribute 'languages'"])
+          | json =>
+            switch (
+              (
+                (
+                  (transformer, array) =>
+                    switch (array) {
+                    | `A(items) =>
+                      let rec loop = (collected, items) =>
+                        switch (items) {
+                        | [] => Ok(List.rev(collected))
+                        | [one, ...rest] =>
+                          switch (transformer(one)) {
+                          | Error(error) =>
+                            Error(["array element", ...error])
+                          | Ok(value) => loop([value, ...collected], rest)
+                          }
+                        };
+                      switch (loop([], items)) {
+                      | Error(error) => Error(error)
+                      | Ok(value) => Ok(Array.of_list(value))
+                      };
+                    | _ => Error(["expected an array"])
+                    }
+                )(
+                  json =>
+                  switch (json) {
+                  | `A([arg0, arg1]) =>
+                    switch (deserialize_Config____color(arg1)) {
+                    | Ok(arg1) =>
+                      switch (deserialize_Config____language(arg0)) {
+                      | Ok(arg0) => Ok((arg0, arg1))
+                      | Error(error) => Error(["tuple element 0", ...error])
+                      }
+                    | Error(error) => Error(["tuple element 1", ...error])
+                    }
+                  | _ => Error(["Expected array"])
+                  }
+                )
+              )(
+                json,
+              )
+            ) {
+            | Error(error) => Error(["attribute 'languages'", ...error])
+            | Ok(data) => inner(data)
+            }
+          };
+        };
+        switch (items |> List.assoc("defaultGreeting")) {
+        | exception Not_found => inner(None)
+        | json =>
+          switch (
+            (
+              (
+                (transformer, option) =>
+                  switch (option) {
+                  | `Null => Ok(None)
+                  | _ =>
+                    switch (transformer(option)) {
+                    | Error(error) => Error(["optional value", ...error])
+                    | Ok(value) => Ok(Some(value))
+                    }
+                  }
+              )(
+                string =>
+                switch (string) {
+                | `String(string) => Ok(string)
+                | _ => Error(["epected a string"])
+                }
+              )
+            )(
+              json,
+            )
+          ) {
+          | Error(error) => Error(["attribute 'defaultGreeting'", ...error])
+          | Ok(data) => inner(data)
+          }
+        };
+      | _ => Error(["Expected an object"])
       }
+  and deserialize_Config____language:
+    target => result(_Config__language, list(string)) = Version1.deserialize_Config____language
   and serialize_Config____color: _Config__color => target =
     constructor =>
       switch (constructor) {
@@ -150,7 +284,6 @@ module Version1 = {
   and serialize_Config____config: _Config__config => target =
     record =>
       `O([
-        ("color", serialize_Config____color(record.color)),
         (
           "languages",
           (
@@ -158,7 +291,11 @@ module Version1 = {
               (transformer, array) =>
                 `A(Array.to_list(Array.map(transformer, array)))
             )(
-              serialize_Config____language,
+              ((arg0, arg1)) =>
+              `A([
+                serialize_Config____language(arg0),
+                serialize_Config____color(arg1),
+              ])
             )
           )(
             record.languages,
@@ -189,7 +326,7 @@ module Version1 = {
       | German => `A([`String("deutsch")])
       };
 };
-module Current = Version1;
+module Current = Version2;
 let parseVersion = json =>
   switch (json) {
   | `O(items) =>
@@ -210,23 +347,30 @@ let wrapWithVersion = (version, payload) =>
   | _ => `A([`Float(float_of_int(version)), payload])
   };
 let serializeConfig = data =>
-  wrapWithVersion(currentVersion, Version1.serialize_Config____config(data))
+  wrapWithVersion(currentVersion, Version2.serialize_Config____config(data))
 and deserializeConfig = data =>
   switch (parseVersion(data)) {
   | Error(err) => Error([err])
   | [@implicit_arity] Ok(version, data) =>
     switch (version) {
+    | 2 =>
+      switch (Version2.deserialize_Config____config(data)) {
+      | Error(error) => Error(error)
+      | Ok(data) => Ok(data)
+      }
     | 1 =>
       switch (Version1.deserialize_Config____config(data)) {
       | Error(error) => Error(error)
-      | Ok(data) => Ok(data)
+      | Ok(data) =>
+        let data = Types2.migrate_Config____config(data);
+        Ok(data);
       }
     | _ => Error(["Unexpected version " ++ string_of_int(version)])
     }
   };
 module Modules = {
   module Config = {
-    type t = Types1._Config__config;
+    type t = Types2._Config__config;
     let serialize = serializeConfig;
     let deserialize = deserializeConfig;
   };

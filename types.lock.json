@@ -235,6 +235,269 @@
           ]
         ]
       ]
+    },
+    {
+      "entries": [
+        {
+          "moduleName": "Config",
+          "modulePath": [],
+          "engines": [
+            [
+              ["ezjsonm"],
+              1
+            ]
+          ],
+          "name": "config"
+        }
+      ],
+      "typeMap": [
+        [
+          [
+            "Config",
+            [],
+            "color"
+          ],
+          [
+            [],
+            {
+              "name": "color",
+              "variables": [],
+              "body": [
+                "Variant",
+                [
+                  [
+                    "Red",
+                    [],
+                    null
+                  ],
+                  [
+                    "Blue",
+                    [],
+                    null
+                  ],
+                  [
+                    "Green",
+                    [],
+                    null
+                  ]
+                ]
+              ]
+            }
+          ]
+        ],
+        [
+          [
+            "Config",
+            [],
+            "config"
+          ],
+          [
+            [
+              [
+                {
+                  "txt": "migrate.languages",
+                  "loc": {
+                    "loc_start": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_end": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_ghost": true
+                  }
+                },
+                [
+                  "PStr",
+                  ";;fun oldConfig ->\n    oldConfig.languages |>\n      (Array.map (fun lang -> (lang, (oldConfig.color))))"
+                ]
+              ]
+            ],
+            {
+              "name": "config",
+              "variables": [],
+              "body": [
+                "Record",
+                [
+                  [
+                    "languages",
+                    [
+                      "Reference",
+                      [
+                        "Builtin",
+                        "array"
+                      ],
+                      [
+                        [
+                          "Tuple",
+                          [
+                            [
+                              "Reference",
+                              [
+                                "Public",
+                                [
+                                  "Config",
+                                  [],
+                                  "language"
+                                ]
+                              ],
+                              []
+                            ],
+                            [
+                              "Reference",
+                              [
+                                "Public",
+                                [
+                                  "Config",
+                                  [],
+                                  "color"
+                                ]
+                              ],
+                              []
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "defaultGreeting",
+                    [
+                      "Reference",
+                      [
+                        "Builtin",
+                        "option"
+                      ],
+                      [
+                        [
+                          "Reference",
+                          [
+                            "Builtin",
+                            "string"
+                          ],
+                          []
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            }
+          ]
+        ],
+        [
+          [
+            "Config",
+            [],
+            "language"
+          ],
+          [
+            [
+              [
+                {
+                  "txt": "rename.Spanish",
+                  "loc": {
+                    "loc_start": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_end": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_ghost": true
+                  }
+                },
+                [
+                  "PStr",
+                  ";;\"espa\\195\\177ol\""
+                ]
+              ],
+              [
+                {
+                  "txt": "rename.English",
+                  "loc": {
+                    "loc_start": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_end": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_ghost": true
+                  }
+                },
+                [
+                  "PStr",
+                  ";;\"english\""
+                ]
+              ],
+              [
+                {
+                  "txt": "rename.German",
+                  "loc": {
+                    "loc_start": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_end": {
+                      "pos_fname": "_none_",
+                      "pos_lnum": 1,
+                      "pos_bol": 0,
+                      "pos_cnum": -1
+                    },
+                    "loc_ghost": true
+                  }
+                },
+                [
+                  "PStr",
+                  ";;\"deutsch\""
+                ]
+              ]
+            ],
+            {
+              "name": "language",
+              "variables": [],
+              "body": [
+                "Variant",
+                [
+                  [
+                    "Spanish",
+                    [],
+                    null
+                  ],
+                  [
+                    "English",
+                    [],
+                    null
+                  ],
+                  [
+                    "German",
+                    [],
+                    null
+                  ]
+                ]
+              ]
+            }
+          ]
+        ]
+      ]
     }
   ],
   "milkSchemaVersion": 1

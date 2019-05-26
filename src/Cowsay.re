@@ -27,12 +27,12 @@ let main = () => {
   switch config {
     | Ok(config) =>
       // We now have the loaded config
-      let color = switch config.color {
-        | Red => ANSITerminal.Red
+      let convert = color => switch color {
+        | Config.Red => ANSITerminal.Red
         | Blue => ANSITerminal.Blue
         | Green => ANSITerminal.Green
       };
-      let show = text => ANSITerminal.print_string([ANSITerminal.Foreground(color)], text ++ "\n");
+      let show = (color, text) => ANSITerminal.print_string([ANSITerminal.Foreground(color)], text ++ "\n");
 
       let message = switch (Sys.argv |> Array.to_list |> List.tl) {
         | [] => switch (config.defaultGreeting) {
@@ -43,10 +43,10 @@ let main = () => {
       };
 
       if (config.languages == [||]) {
-        show("\n" ++ cowSay( greetingForLanguage(English), message))
+        show(ANSITerminal.Green, "\n" ++ cowSay( greetingForLanguage(English), message))
       } else {
-        config.languages |> Array.iter(language => {
-          show("\n" ++ cowSay( greetingForLanguage(language), message))
+        config.languages |> Array.iter(((language, color)) => {
+          show(convert(color), "\n" ++ cowSay( greetingForLanguage(language), message))
         });
       }
       // print_endline("Hello in " ++ color)
