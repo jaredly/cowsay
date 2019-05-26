@@ -26,6 +26,7 @@ let main = () => {
   let config = TypeSerde.deserializeConfig(data);
   switch config {
     | Ok(config) =>
+      // We now have the loaded config
       let color = switch config.color {
         | Red => ANSITerminal.Red
         | Blue => ANSITerminal.Blue

@@ -7,13 +7,11 @@ type color = Red | Blue | Green;
 type language = Spanish | English | German;
 
 type config = {
-  color,
-  languages: array(language),
+  languages: array((language, color)),
   defaultGreeting: option(string),
 }
 
 let empty = {
-  color: Red,
-  languages: [|English|],
+  languages: [|(English, Red)|],
   defaultGreeting: None,
 }

@@ -1,6 +1,5 @@
 {
-  "milkSchemaVersion": 1,
-  "version": 1,
+  "version": 2,
   "engines": {
     "ezjsonm": {
       "output": "src/TypeSerde.re"
@@ -12,5 +11,6 @@
       "type": "config"
     }
   ],
-  "custom": []
+  "custom": [],
+  "milkSchemaVersion": 1
 }
