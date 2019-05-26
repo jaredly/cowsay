@@ -1,2 +1,4 @@
 
-(executable (public_name cowsay))
+(executable
+  (public_name cowsay)
+  (libraries core ezjsonm))
