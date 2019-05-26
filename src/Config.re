@@ -14,6 +14,6 @@ type config = {
 
 let empty = {
   color: Red,
-  languages: [||],
+  languages: [|English|],
   defaultGreeting: None,
 }

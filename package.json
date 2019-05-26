@@ -7,6 +7,7 @@
   "dependencies": {
     "@opam/dune": "*",
     "@opam/core": "*",
+    "@opam/ANSITerminal": "*",
     "@esy-ocaml/reason": "*",
     "rex-json": "*",
     "@opam/ezjsonm": "*",

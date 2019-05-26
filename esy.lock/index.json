@@ -1,5 +1,5 @@
 {
-  "checksum": "6d0725e1426bba6d87b97e39c6a20f71",
+  "checksum": "b8579170b7ed6d7100e2382dc1f80d2b",
   "root": "cowsay@link-dev:./package.json",
   "node": {
     "rex-json@1.4.0@d41d8cd9": {
@@ -44,6 +44,7 @@
         "rex-json@1.4.0@d41d8cd9", "ocaml@4.7.1004@d41d8cd9",
         "@opam/ezjsonm@opam:1.1.0@ee4c8dee",
         "@opam/dune@opam:1.9.3@cccbbfe7", "@opam/core@opam:v0.12.1@97745b8d",
+        "@opam/ANSITerminal@opam:0.8.1@fbec7737",
         "@esy-ocaml/reason@3.4.0@d41d8cd9"
       ],
       "devDependencies": []
@@ -2059,6 +2060,28 @@
       "dependencies": [ "@esy-ocaml/substs@0.0.1@d41d8cd9" ],
       "devDependencies": []
     },
+    "@opam/base-bytes@opam:base@19d0c2ff": {
+      "id": "@opam/base-bytes@opam:base@19d0c2ff",
+      "name": "@opam/base-bytes",
+      "version": "opam:base",
+      "source": {
+        "type": "install",
+        "source": [ "no-source:" ],
+        "opam": {
+          "name": "base-bytes",
+          "version": "base",
+          "path": "esy.lock/opam/base-bytes.base"
+        }
+      },
+      "overrides": [],
+      "dependencies": [
+        "ocaml@4.7.1004@d41d8cd9", "@opam/ocamlfind@opam:1.8.0@f744a0c5",
+        "@esy-ocaml/substs@0.0.1@d41d8cd9"
+      ],
+      "devDependencies": [
+        "ocaml@4.7.1004@d41d8cd9", "@opam/ocamlfind@opam:1.8.0@f744a0c5"
+      ]
+    },
     "@opam/base@opam:v0.12.2@e209c8f2": {
       "id": "@opam/base@opam:v0.12.2@e209c8f2",
       "name": "@opam/base",
@@ -2082,6 +2105,34 @@
       ],
       "devDependencies": [
         "ocaml@4.7.1004@d41d8cd9", "@opam/sexplib0@opam:v0.12.0@e823b4e9"
+      ]
+    },
+    "@opam/ANSITerminal@opam:0.8.1@fbec7737": {
+      "id": "@opam/ANSITerminal@opam:0.8.1@fbec7737",
+      "name": "@opam/ANSITerminal",
+      "version": "opam:0.8.1",
+      "source": {
+        "type": "install",
+        "source": [
+          "archive:https://opam.ocaml.org/cache/md5/d9/d9909496b5e47c75227453256198d1ae#md5:d9909496b5e47c75227453256198d1ae",
+          "archive:https://github.com/Chris00/ANSITerminal/releases/download/0.8.1/ANSITerminal-0.8.1.tbz#md5:d9909496b5e47c75227453256198d1ae"
+        ],
+        "opam": {
+          "name": "ANSITerminal",
+          "version": "0.8.1",
+          "path": "esy.lock/opam/ANSITerminal.0.8.1"
+        }
+      },
+      "overrides": [],
+      "dependencies": [
+        "ocaml@4.7.1004@d41d8cd9", "@opam/dune@opam:1.9.3@cccbbfe7",
+        "@opam/base-unix@opam:base@87d0b2eb",
+        "@opam/base-bytes@opam:base@19d0c2ff",
+        "@esy-ocaml/substs@0.0.1@d41d8cd9"
+      ],
+      "devDependencies": [
+        "ocaml@4.7.1004@d41d8cd9", "@opam/base-unix@opam:base@87d0b2eb",
+        "@opam/base-bytes@opam:base@19d0c2ff"
       ]
     },
     "@esy-ocaml/substs@0.0.1@d41d8cd9": {
