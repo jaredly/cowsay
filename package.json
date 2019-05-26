@@ -1,0 +1,14 @@
+{
+  "name": "cowsay",
+  "esy": {
+    "buildsInSource": "_build",
+    "build": "dune build -p #{self.name}"
+  },
+  "dependencies": {
+    "@opam/dune": "*",
+    "@esy-ocaml/reason": "*",
+    "rex-json": "*",
+    "@opam/ezjsonm": "*",
+    "ocaml": "~4.7.2"
+  }
+}

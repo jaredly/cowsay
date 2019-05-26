@@ -1,0 +1,16 @@
+{
+  "$schemaVersion": 2,
+  "version": 0,
+  "engines": {
+    "ezjsonm": {
+      "output": "src/TypeSerde.re"
+    }
+  },
+  "entries": [
+    {
+      "file": "src/Config.re",
+      "type": "config"
+    }
+  ],
+  "custom": []
+}
