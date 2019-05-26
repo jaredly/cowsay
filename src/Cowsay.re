@@ -37,7 +37,10 @@ let main = () => {
       let show = text => ANSITerminal.print_string([ANSITerminal.Foreground(color)], text ++ "\n");
 
       let message = switch (Sys.argv |> Array.to_list |> List.tl) {
-        | [] => "Usage: cowsay some text"
+        | [] => switch (config.defaultGreeting) {
+          | None => "Usage: cowsay some text"
+          | Some(greeting) => greeting
+        }
         | words => String.concat(" ", words)
       };
 

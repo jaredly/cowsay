@@ -1,5 +1,6 @@
 {
   "$schemaVersion": 1,
   "color": "Blue",
-  "languages": ["deutsch", "español"]
+  "languages": ["deutsch", "español"],
+  "defaultGreeting": "What is up"
 }
