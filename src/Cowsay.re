@@ -29,7 +29,7 @@ let main = () => {
       // We now have the loaded config
       let convert = color => switch color {
         | Config.Red => ANSITerminal.Red
-        | Blue => ANSITerminal.Blue
+        // | Blue => ANSITerminal.Blue
         | Green => ANSITerminal.Green
       };
       let show = (color, text) => ANSITerminal.print_string([ANSITerminal.Foreground(color)], text ++ "\n");
